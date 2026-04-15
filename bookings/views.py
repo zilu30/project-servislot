@@ -5,6 +5,7 @@ from django.db import transaction
 from .models import Timeslot, Booking
 from .utils import generate_slots
 from datetime import datetime
+from django.core.mail import send_mail
 
 # Create your views here.
 @api_view(['POST'])
@@ -13,23 +14,61 @@ def create_booking(request):
     slot_id = request.data.get('slot_id')
     service_id = request.data.get('service_id')
 
+    now = datetime.now().date()
+
+    try:
+        #  First get slot normally (no lock yet)
+        slot = Timeslot.objects.get(id=slot_id)
+    except Timeslot.DoesNotExist:
+        return Response({"error": "Slot not found"}, status=404)
+
+    # Prevent past booking
+    if slot.date < now:
+        return Response({"error": "Cannot book past dates"}, status=400)
+
+    # START TRANSACTION HERE
     with transaction.atomic():
+
+        # NOW lock it safely
         slot = Timeslot.objects.select_for_update().get(id=slot_id)
 
+        # Double booking prevention
         if slot.is_booked:
-            return Response({"error":"Slot already booked"}, status=400)
-        
-        slot.is_booked =True
+            return Response({"error": "Slot already booked"}, status=400)
+
+        # Mark booked
+        slot.is_booked = True
         slot.save()
 
+        # Create booking
         booking = Booking.objects.create(
-            client= request.user,
+            client=user,
             provider=slot.provider,
             service_id=service_id,
             slot=slot,
             status='BOOKED'
         )
-    return Response ({"message":"Booking successful", 'booking_id': booking.id})
+        # email notification system
+
+    send_mail(
+        subject='New Booking Received',
+        message= f'''
+        You have a new booking!
+
+        Client: {booking.client.username}
+        Service: {booking.service.name}
+        Date:{booking.slot.date}
+        Time: {booking.slot.start_time}
+        ''',
+        from_email= 'noreply@servislot.com',
+        recipient_list=[booking.provider.email],
+        fail_silently=False,
+    )
+
+    return Response({
+        "message": "Booking successful",
+        "booking_id": booking.id
+    })
 
 @api_view(['POST'])
 def set_availability(request):
