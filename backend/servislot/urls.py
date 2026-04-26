@@ -23,4 +23,6 @@ urlpatterns = [
     path('api/bookings/book/', create_booking),
     path ('', home_page), 
     path('api/bookings/', include('bookings.urls')),
+    path('api/services/', include('services.urls')),
+    
 ]
