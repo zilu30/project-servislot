@@ -72,7 +72,8 @@ def create_booking(request):
 
 @api_view(['POST'])
 def set_availability(request):
-        
+    if not request.user.is_authenticated:
+        return Response({"error": "You must be loggged in to set availability."}, status=401)
     provider = request.user
 
     date_str = request.data.get('date')
