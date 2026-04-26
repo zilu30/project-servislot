@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'services',
     'bookings',
     'corsheaders',
-    'rest_framework',
+    'servislot',
 ]
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
