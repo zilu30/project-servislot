@@ -9,6 +9,7 @@ import CustomerDashboard from "./pages/CustomerDashboard";
 import "./App.css";
 import CategoryResults from "./pages/CategoryResults";
 import CustomerLogin from "./pages/CustomerLogin";
+import ProviderLogin from "./pages/ProviderLogin";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/customer-dashboard" element={<CustomerDashboard />} />
         <Route path="/category" element={<CategoryResults />} />
         <Route path="/customer-login" element={<CustomerLogin />} />
+        <Route path="/provider-login" element={<ProviderLogin />} />
       </Routes>
     </Router>
   );

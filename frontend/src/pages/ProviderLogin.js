@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-function CustomerLogin() {
+function ProviderLogin() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -18,47 +18,48 @@ function CustomerLogin() {
     }));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!formData.email || !formData.password) {
-    alert("Please enter your email and password.");
-    return;
-  }
+    if (!formData.email || !formData.password) {
+      alert("Please enter your email and password.");
+      return;
+    }
 
-  try {
-    const response = await axios.post("http://127.0.0.1:8000/api/token/", {
-      username: formData.email,   // Django default expects username
-      password: formData.password,
-    });
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/token/",
+        {
+          username: formData.email,
+          password: formData.password,
+        }
+      );
 
-    // Save tokens
-    localStorage.setItem("access", response.data.access);
-    localStorage.setItem("refresh", response.data.refresh);
+      // Save provider tokens (separate keys from customer)
+      localStorage.setItem("provider_access", response.data.access);
+      localStorage.setItem("provider_refresh", response.data.refresh);
 
-    // Optional user info
-    localStorage.setItem(
-      "customer",
-      JSON.stringify({ email: formData.email })
-    );
+      localStorage.setItem(
+        "provider",
+        JSON.stringify({ email: formData.email })
+      );
 
-    // Redirect
-    window.location.href = "/customer-dashboard";
-  } catch (error) {
-    console.error(error);
-    alert("Invalid email or password");
-  }
-};
+      // Redirect to provider dashboard
+      window.location.href = "/provider-dashboard";
+    } catch (error) {
+      console.error(error);
+      alert("Invalid provider email or password");
+    }
+  };
 
   return (
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-header">
-          <span className="auth-badge">Customer Access</span>
-          <h1>Customer Login</h1>
+          <span className="auth-badge">Provider Access</span>
+          <h1>Provider Login</h1>
           <p>
-            Sign in to manage your bookings, view upcoming appointments, and
-            access your customer dashboard.
+            Sign in to manage your services, bookings, and customer requests.
           </p>
         </div>
 
@@ -106,7 +107,7 @@ const handleSubmit = async (e) => {
 
         <div className="auth-footer">
           <p>
-            Don’t have an account?{" "}
+            Want to become a provider?{" "}
             <Link to="/" className="auth-inline-link">
               Return Home
             </Link>
@@ -117,4 +118,4 @@ const handleSubmit = async (e) => {
   );
 }
 
-export default CustomerLogin;
+export default ProviderLogin;
