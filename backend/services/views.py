@@ -7,11 +7,9 @@ from .models import Service, ServiceSlot, Favorite
 from .serializers import ServiceSerializer
 
 
-# --- public ---
-
 @api_view(['GET'])
 def get_services(request):
-    # filter out deactivated provider accounts so their services don't show up
+    # display active services only
     services = Service.objects.filter(
         provider__role='provider',
         provider__is_active=True,
@@ -29,9 +27,7 @@ def get_service_detail(request, pk):
     serializer = ServiceSerializer(service)
     return Response(serializer.data)
 
-
-# --- provider-owned ---
-
+# provider views
 class ProviderServicesView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -66,7 +62,6 @@ class ProviderServiceDetailView(APIView):
         except Service.DoesNotExist:
             return Response({"error": "Service not found"}, status=404)
 
-        # partial update — only overwrite fields that were sent
         service.title       = request.data.get('title',       service.title)
         service.description = request.data.get('description', service.description)
         service.price       = request.data.get('price',       service.price)
@@ -85,8 +80,7 @@ class ProviderServiceDetailView(APIView):
         return Response({"message": "Service deleted"}, status=204)
 
 
-# --- favorites ---
-
+# favorites 
 class FavoritesView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -101,7 +95,6 @@ class FavoritesView(APIView):
             service = Service.objects.get(pk=service_id)
         except Service.DoesNotExist:
             return Response({"error": "Service not found"}, status=404)
-        # get_or_create is idempotent — safe to call on repeat taps
         Favorite.objects.get_or_create(customer=request.user, service=service)
         return Response({"status": "added"})
 

@@ -1,6 +1,7 @@
 import React from "react";
 import BookingForm from "../components/BookingForm";
 
+// Booking function
 function Booking() {
   return (
     <div className="booking-page">
@@ -11,7 +12,7 @@ function Booking() {
           your booking request.
         </p>
       </div>
-
+  
       <BookingForm />
     </div>
   );

@@ -14,8 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'email', 'role', 'phone_number', 'company_name', 'category']
 
-# Tacks role/email/username onto the standard JWT response so
-# the frontend doesn't need a second /me call right after login
+# Tacks role,email and username after login
 class CustomTokenSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
@@ -74,7 +73,7 @@ class WorkingHoursView(APIView):
         request.user.working_hours = request.data
         request.user.save()
         return Response(request.user.working_hours)
-# sigup
+# signup
 class SignupView(APIView):
     permission_classes = [AllowAny]
 
