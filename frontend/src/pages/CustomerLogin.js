@@ -1,13 +1,18 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../api/axiosConfig";
 
 function CustomerLogin() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    email: "",
+    username: "",
     password: "",
     rememberMe: false,
   });
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -18,57 +23,90 @@ function CustomerLogin() {
     }));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
 
-  if (!formData.email || !formData.password) {
-    alert("Please enter your email and password.");
-    return;
-  }
+    if (!formData.username || !formData.password) {
+      setError("Please enter your username and password.");
+      return;
+    }
 
-  try {
-    const response = await axios.post("http://127.0.0.1:8000/api/token/", {
-      username: formData.email,   
-      password: formData.password,
-    });
+    setLoading(true);
 
-    // Save tokens
-    localStorage.setItem("access", response.data.access);
-    localStorage.setItem("refresh", response.data.refresh);
+    try {
+      // Login
+      const response = await api.post("/token/", {
+        username: formData.username,
+        password: formData.password,
+      });
+      sessionStorage.setItem("access", response.data.access);
+      sessionStorage.setItem("refresh", response.data.refresh);
 
-    // Optional user info
-    localStorage.setItem(
-      "customer",
-      JSON.stringify({ email: formData.email })
-    );
+      // Saving user info
+      sessionStorage.setItem(
+        "user",
+        JSON.stringify({
+          email: response.data.email,
+          username: response.data.username,
+        })
+      );
 
-    // Redirect
-    window.location.href = "/customer-dashboard";
-  } catch (error) {
-    console.error(error);
-    alert("Invalid email or password");
-  }
-};
+      // User profile
+      const meResponse = await api.get("/me/");
+
+      const role = meResponse.data.role;
+
+      // Block incorrect role (Customer/ Provider login )
+      if (role !== "customer") {
+        sessionStorage.clear();
+        setError("This account is not a customer account. Use Provider Login.");
+        return;
+      }
+
+      // Save roll
+      sessionStorage.setItem("role", role);
+      sessionStorage.setItem("user", JSON.stringify(meResponse.data));
+      window.dispatchEvent(new Event("auth-change"));
+
+      // Redirect
+      const redirect = sessionStorage.getItem("redirect_after_login");
+      if (redirect) {
+        sessionStorage.removeItem("redirect_after_login");
+        navigate(redirect);
+      } else {
+        navigate("/customer-dashboard");
+      }
+
+    } catch (err) {
+      console.error(err);
+      const msg = err.response?.data?.detail || "Invalid username or password.";
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="auth-page">
       <div className="auth-card">
+
         <div className="auth-header">
           <span className="auth-badge">Customer Access</span>
           <h1>Customer Login</h1>
           <p>
-            Sign in to manage your bookings, view upcoming appointments, and
-            access your customer dashboard.
+            Sign in to manage your bookings and access your dashboard.
           </p>
         </div>
 
         <form className="auth-form" onSubmit={handleSubmit}>
-          <label>Email Address</label>
+
+          <label>Username</label>
           <input
-            type="email"
-            name="email"
-            placeholder="Enter your email"
-            value={formData.email}
+            type="text"
+            name="username"
+            placeholder="Enter your username"
+            value={formData.username}
             onChange={handleChange}
             required
           />
@@ -93,25 +131,29 @@ const handleSubmit = async (e) => {
               />
               <span>Remember me</span>
             </label>
-
-            <button type="button" className="auth-link-button">
-              Forgot password?
-            </button>
           </div>
 
-          <button type="submit" className="auth-submit-btn">
-            Login
+          {error && <p className="auth-error">{error}</p>}
+
+          <button
+            type="submit"
+            className="auth-submit-btn"
+            disabled={loading}
+          >
+            {loading ? "Signing in..." : "Login"}
           </button>
+
         </form>
 
         <div className="auth-footer">
           <p>
-            Don’t have an account?{" "}
-            <Link to="/" className="auth-inline-link">
-              Return Home
+            Don't have an account?{" "}
+            <Link to="/customer-signup" className="auth-inline-link">
+              Sign up
             </Link>
           </p>
         </div>
+
       </div>
     </div>
   );

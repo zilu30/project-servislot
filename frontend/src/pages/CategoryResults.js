@@ -1,39 +1,19 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
-export default function Categories() {
-  const navigate = useNavigate();
+export default function CategoryResults() {
+  const navigate = useNavigate(); // redirect link
+  const location = useLocation(); // 
 
-  const categories = [
-    "Home Services",
-    "Repair & Maintenance",
-    "Beauty & Personal Care",
-    "Tutoring",
-  ];
+  useEffect(() => {
+    const params = new URLSearchParams(location.search); 
+    const name = params.get("name") || location.state?.category || ""; // getting query from URL 
+    if (name) {
+      navigate(`/services?category=${encodeURIComponent(name)}`, { replace: true }); // category navigation
+    } else {
+      navigate("/services", { replace: true });
+    }
+  }, [navigate, location]);
 
-  const handleCategoryClick = (category) => {
-    navigate("/booking", {
-      state: { selectedCategory: category },
-    });
-  };
-
-  return (
-    <div>
-      <h1>Select a Category</h1>
-
-      {categories.map((category) => (
-        <div
-          key={category}
-          onClick={() => handleCategoryClick(category)}
-          style={{
-            border: "1px solid #ccc",
-            padding: "12px",
-            margin: "10px 0",
-            cursor: "pointer",
-          }}
-        >
-          {category}
-        </div>
-      ))}
-    </div>
-  );
+  return null;
 }

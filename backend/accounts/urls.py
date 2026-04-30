@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import CustomTokenView
-from rest_framework_simplejwt.views import TokenRefreshView
+from .views import MeView, UpdateMeView, SignupView, WorkingHoursView
 
 urlpatterns = [
-    path("api/token/", CustomTokenView.as_view()),
-    path("api/token/refresh/", TokenRefreshView.as_view()),
+    path('me/', MeView.as_view(), name='me'),
+    path('me/update/', UpdateMeView.as_view(), name='me-update'),
+    path('signup/', SignupView.as_view(), name='signup'),
+    path('working-hours/', WorkingHoursView.as_view(), name='working-hours'),
 ]

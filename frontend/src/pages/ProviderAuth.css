@@ -1,0 +1,137 @@
+.pa-page {
+  min-height: 100vh;
+  background: #f0ede6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.pa-card {
+  background: white;
+  border-radius: 24px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.07);
+  padding: 44px 48px;
+  width: 100%;
+  max-width: 560px;
+}
+
+.pa-header { text-align: center; margin-bottom: 28px; }
+
+.pa-badge {
+  display: inline-block;
+  background: #e5eee9;
+  color: #173f35;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+}
+
+.pa-title {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #17201c;
+  margin: 0 0 8px;
+}
+
+.pa-sub { font-size: 0.93rem; color: #6b7280; margin: 0; }
+
+/* Tabs */
+.pa-tabs {
+  display: flex;
+  background: #f5f4ef;
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 28px;
+}
+
+.pa-tab {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  border-radius: 9px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #6b7280;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, color 0.15s;
+}
+
+.pa-tab.active {
+  background: white;
+  color: #17201c;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+/* Form */
+.pa-form { display: flex; flex-direction: column; gap: 18px; }
+
+.pa-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.pa-field { display: flex; flex-direction: column; gap: 7px; }
+
+.pa-field label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #374151;
+}
+
+.pa-field input,
+.pa-field select {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #d1d5db;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: #17201c;
+  outline: none;
+  transition: border-color 0.15s;
+  background: white;
+}
+
+.pa-field input:focus,
+.pa-field select:focus { border-color: #17201c; }
+
+.pa-error {
+  font-size: 0.9rem;
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin: 0;
+}
+
+.pa-btn {
+  width: 100%;
+  padding: 15px;
+  border-radius: 12px;
+  border: none;
+  background: #17201c;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+  margin-top: 4px;
+}
+
+.pa-btn:hover    { background: #0f2d26; }
+.pa-btn:disabled { background: #9ca3af; cursor: not-allowed; }
+
+@media (max-width: 560px) {
+  .pa-card    { padding: 32px 22px; }
+  .pa-grid-2  { grid-template-columns: 1fr; }
+}
