@@ -1,5 +1,6 @@
 # servislot 
 A fullstack web based appointment booking and scheduling system for service based businesses. The system allows customers to book appointments online while enabling business owners to manage schedules, availability, and client records through an intuitive dashboard
+
 Objectives
 •	Provide an easy-to-use booking system for clients
 •	Prevent double-booking using backend validation
@@ -7,7 +8,7 @@ Objectives
 •	Implement role-based authentication (Client vs Provider)
 •	Demonstrate software engineering principles including teamwork, version control, testing, and documentation
 
-- Tech Stack
+Tech Stack
 = Frontend - HTML, CSS, JavaScript, React
 - Backend - Python, Django, Django REST Framework
 - Database - PostgreSQL
@@ -19,15 +20,15 @@ Installation required:
 - PostgreSQL
 
                                     -----------Steps-----------
-1. Clone repo
+1.Clone repo
 -   git clone https://github.com/zilu30/project-servislot.git
 -   cd servislot
 
-2. Setting up database
+2.Setting up database
 -   Open psql and run the command.
 -   CREATE DATABASE servislot_db;
 
-3. Setting up backend
+3.Setting up backend
 -   cd backend
 
 - setting up virtual environement:
@@ -47,7 +48,7 @@ Installation required:
 - Start backend server:
 - python manage.py runserver
 
-- 4. Setting up frontend
+4.Setting up frontend
 
 -   In terminal:
 -     cd frontend
