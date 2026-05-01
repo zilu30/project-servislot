@@ -6,13 +6,12 @@ Objectives
 •	Allow service providers to manage availability and appointments
 •	Implement role-based authentication (Client vs Provider)
 •	Demonstrate software engineering principles including teamwork, version control, testing, and documentation
+
 Tech Stack
 Frontend - HTML, CSS, JavaScript, React
 Backend - Python, Django, Django REST Framework
 Database - PostgreSQL
 Tools - Git & GitHub, Postman (API testing), VS Code
-# project-servislot
-A service providing application for individuals and small businesses. 
 
 Installation required:
 - Python
