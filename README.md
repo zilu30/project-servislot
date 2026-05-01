@@ -37,8 +37,8 @@ Installation required:
 - pip install django djangorestframework djangorestframework-simplejwt django-cars-headers psycopg2-binary python-dotenv
 
 - Create .env file inside backend folder
-- EMAIL_HOST_USER=brijp2307@gmaiil.com
-- EMAIL_HOST_PASSWORD=
+- EMAIL_HOST_USER=hail.gail1530@gmail.com
+- EMAIL_HOST_PASSWORD=ptkx jryn tydv zive
 
 - Migration to create a database
 - python manage.py makemigrations
@@ -54,4 +54,4 @@ Installation required:
 -     npm install
 -     npm start
 
-- Frotnend :http://localhost:3000
+- Frontend :http://localhost:3000
