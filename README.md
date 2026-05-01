@@ -11,28 +11,28 @@ Objectives
 = Frontend - HTML, CSS, JavaScript, React
 - Backend - Python, Django, Django REST Framework
 - Database - PostgreSQL
-Tools - Git & GitHub, Postman (API testing), VS Code
+- Tools - Git & GitHub, Postman (API testing), VS Code
 
 Installation required:
 - Python
 - Node.js and npm
 - PostgreSQL
 
-                                     -----------Steps-----------
+                                    -----------Steps-----------
 1. Clone repo
-- git clone https://github.com/zilu30/project-servislot.git
-- cd servislot
+-   git clone https://github.com/zilu30/project-servislot.git
+-   cd servislot
 
 2. Setting up database
-- Open psql and run the command.
-- CREATE DATABASE servislot_db;
+-   Open psql and run the command.
+-   CREATE DATABASE servislot_db;
 
 3. Setting up backend
-- cd backend
+-   cd backend
 
 - setting up virtual environement:
 - python -m venv venv
-- venv\Scri[ts\activate
+- venv\Scripts\activate
 
 - pip install django djangorestframework djangorestframework-simplejwt django-cars-headers psycopg2-binary python-dotenv
 
@@ -49,9 +49,9 @@ Installation required:
 
 - 4. Setting up frontend
 
-- In terminal:
-- cd frontend
-- npm install
-- npm start
+-   In terminal:
+-     cd frontend
+-     npm install
+-     npm start
 
 - Frotnend :http://localhost:3000
