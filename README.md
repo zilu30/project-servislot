@@ -14,45 +14,45 @@ Tools - Git & GitHub, Postman (API testing), VS Code
 # project-servislot
 A service providing application for individuals and small businesses. 
 
-Instrallation required:
+Installation required:
 - Python
 - Node.js and npm
 - PostgreSQL
 
 ---Steps---
 1. Clone repo
-  git clone https://github.com/zilu30/project-servislot.git
-  cd servislot
+- git clone https://github.com/zilu30/project-servislot.git
+- cd servislot
 
 2. Setting up database
- Open psql and run the command.
- CREATE DATABASE servislot_db;
+- Open psql and run the command.
+- CREATE DATABASE servislot_db;
 
 3. Setting up backend
- cd backend
+- cd backend
 
- setting up virrtual environement:
- python -m venv venv
- venv\Scri[ts\activate
+- setting up virtual environement:
+- python -m venv venv
+- venv\Scri[ts\activate
 
- pip install django djangorestframework djangorestframework-simplejwt django-cars-headers psycopg2-binary python-dotenv
+- pip install django djangorestframework djangorestframework-simplejwt django-cars-headers psycopg2-binary python-dotenv
 
- Create .env file inside backend folder
- EMAIL_HOST_USER=brijp2307@gmaiil.com
- EMAIL_HOST_PASSWORD=
+- Create .env file inside backend folder
+- EMAIL_HOST_USER=brijp2307@gmaiil.com
+- EMAIL_HOST_PASSWORD=
 
-Migration to create a database
-python manage.py makemigrations
-python manage.py migrate
+- Migration to create a database
+- python manage.py makemigrations
+- python manage.py migrate
 
-Start backend server:
-python manage.py runserver
+- Start backend server:
+- python manage.py runserver
 
-4. Setting up frontend
+- 4. Setting up frontend
 
-In terminal:
-cd frontend
-npm install
-npm start
+- In terminal:
+- cd frontend
+- npm install
+- npm start
 
-Frotnend :http://localhost:3000
+- Frotnend :http://localhost:3000
