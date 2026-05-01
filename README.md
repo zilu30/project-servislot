@@ -7,10 +7,10 @@ Objectives
 •	Implement role-based authentication (Client vs Provider)
 •	Demonstrate software engineering principles including teamwork, version control, testing, and documentation
 
-Tech Stack
-Frontend - HTML, CSS, JavaScript, React
-Backend - Python, Django, Django REST Framework
-Database - PostgreSQL
+- Tech Stack
+= Frontend - HTML, CSS, JavaScript, React
+- Backend - Python, Django, Django REST Framework
+- Database - PostgreSQL
 Tools - Git & GitHub, Postman (API testing), VS Code
 
 Installation required:
@@ -18,7 +18,7 @@ Installation required:
 - Node.js and npm
 - PostgreSQL
 
----Steps---
+                                     -----------Steps-----------
 1. Clone repo
 - git clone https://github.com/zilu30/project-servislot.git
 - cd servislot
