@@ -3,8 +3,7 @@ from .models import Timeslot
 
 
 def generate_slots(provider, date, start_time, end_time, duration=30):
-    # wipe unbooked slots first — prevents duplicate/overlapping entries when
-    # a provider re-saves with a different duration or time window
+  # prevents duplicate booking
     Timeslot.objects.filter(provider=provider, date=date, is_booked=False).delete()
 
     current = datetime.combine(date, start_time)
