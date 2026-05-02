@@ -1,5 +1,5 @@
 # servislot 
-A fullstack web based appointment booking and scheduling system for service based businesses. The system allows customers to book appointments online while enabling business owners to manage schedules, availability, and client records through an intuitive dashboard
+A fullstack web based appointment booking and scheduling system for service based businesses. The system allows customers to book appointments online while enabling business owners to manage schedules, availability, and client records through an intuitive dashboard.
 
 Objectives
 •	Provide an easy-to-use booking system for clients
