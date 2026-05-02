@@ -24,8 +24,6 @@ class Booking(models.Model):
     client   = models.ForeignKey(User, on_delete=models.CASCADE, related_name='client_bookings')
     provider = models.ForeignKey(User, on_delete=models.CASCADE, related_name='provider_bookings')
     service  = models.ForeignKey('services.Service', on_delete=models.CASCADE)
-
-    # OneToOne keeps the constraint simple — one booking per slot, enforced at DB level
     slot = models.OneToOneField(Timeslot, on_delete=models.CASCADE)
 
     status     = models.CharField(max_length=20, choices=STATUS_CHOICES, default='BOOKED')
@@ -37,7 +35,6 @@ class Booking(models.Model):
 
 
 class Availability(models.Model):
-    # legacy model — slots are now managed through Timeslot directly
     provider   = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='availability')
     date       = models.DateField()
     start_time = models.TimeField()
