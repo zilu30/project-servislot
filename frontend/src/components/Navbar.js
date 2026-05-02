@@ -27,7 +27,7 @@ function Navbar() {
       <div className="nav-links">
         <Link to="/">Home</Link>
 
-        {/* --- not logged in --- */}
+        {/* not logged in  */}
         {!role && (
           <>
             <Link to="/customer-login" className="btn-nav-light">Customer Login</Link>
@@ -35,7 +35,7 @@ function Navbar() {
           </>
         )}
 
-        {/* --- customer --- */}
+        {/* customer  */}
         {role === "customer" && (
           <>
             <Link to="/services">Explore Services</Link>
@@ -44,7 +44,7 @@ function Navbar() {
           </>
         )}
 
-        {/* --- provider --- */}
+        {/* provider  */}
         {role === "provider" && (
           <>
             <Link to="/dashboard" className="btn-nav-light">My Dashboard</Link>
