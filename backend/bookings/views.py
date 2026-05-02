@@ -11,7 +11,7 @@ from .utils import generate_slots
 from .serializers import BookingSerializer, TimeslotSerializer
 
 
-# --- email helpers ---
+# email notification
 
 def _send_booking_emails(booking, event):
     """Fire confirmation/notification emails for booked, cancelled, or rescheduled events.
@@ -92,7 +92,7 @@ def _send_booking_emails(booking, event):
               [booking.provider.email], fail_silently=True)
 
 
-# --- booking actions ---
+# booking actions 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -120,7 +120,7 @@ def create_booking(request):
     if slot.is_booked:
         return Response({"error": "Slot already booked"}, status=400)
 
-    # double-check inside a transaction — slots can get race-conditioned
+    # double booking check
     with transaction.atomic():
         slot = Timeslot.objects.select_for_update().get(id=slot_id)
 
@@ -174,11 +174,9 @@ def reschedule_booking(request):
     if new_slot.date < now:
         return Response({"error": "Cannot reschedule to a past date"}, status=400)
 
-    # prevent switching providers mid-booking
+    # locking switching providers
     if new_slot.provider_id != booking.provider_id:
         return Response({"error": "New slot must be with the same provider"}, status=400)
-
-    # same race-condition concern as create — lock the new slot before committing
     with transaction.atomic():
         new_slot = Timeslot.objects.select_for_update().get(id=new_slot_id)
 
@@ -223,7 +221,7 @@ def cancel_booking(request):
     booking.status = 'CANCELLED'
     booking.save()
 
-    # free the slot so someone else can book it
+    # slot check
     booking.slot.is_booked = False
     booking.slot.save()
 
@@ -248,7 +246,7 @@ def complete_booking(request):
     except Booking.DoesNotExist:
         return Response({"error": "Booking not found"}, status=404)
 
-    action = request.data.get('action')  # 'complete' | 'no_show'
+    action = request.data.get('action')  
 
     if booking.status == 'CANCELLED':
         return Response({"error": "Cannot modify a cancelled booking"}, status=400)
@@ -265,7 +263,7 @@ def complete_booking(request):
     return Response({"message": f"Booking marked as {booking.status}", "booking": serializer.data})
 
 
-# --- booking list views ---
+# booking list views 
 
 class CustomerBookingListView(APIView):
     permission_classes = [IsAuthenticated]
@@ -292,7 +290,7 @@ class ProviderBookingListView(APIView):
         return Response(serializer.data)
 
 
-# --- availability ---
+# availability 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -361,7 +359,7 @@ def set_recurring_availability(request):
 
     start_date_str = request.data.get('start_date')
     end_date_str   = request.data.get('end_date')
-    days_of_week   = request.data.get('days_of_week', [])   # list of ints 0=Mon … 6=Sun
+    days_of_week   = request.data.get('days_of_week', [])   
     start_time_str = request.data.get('start_time')
     end_time_str   = request.data.get('end_time')
     slot_duration  = request.data.get('slot_duration', 30)
@@ -386,7 +384,6 @@ def set_recurring_availability(request):
     if start_time >= end_time:
         return Response({"error": "start_time must be before end_time"}, status=400)
 
-    # guard against someone accidentally blasting a year of 10-min slots
     if (end_date - start_date).days > 365:
         return Response({"error": "Date range cannot exceed 365 days"}, status=400)
 
@@ -399,8 +396,6 @@ def set_recurring_availability(request):
             generate_slots(request.user, current, start_time, end_time, duration=slot_duration)
             days_created += 1
         current += timedelta(days=1)
-
-    # upsert the recurring pattern so auto-extend can reference it later
     RecurringSchedule.objects.update_or_create(
         provider=request.user,
         defaults={
@@ -432,7 +427,6 @@ def auto_extend_schedule(request):
 
     today = datetime.now().date()
 
-    # find the furthest future slot we already have
     last_slot = (
         Timeslot.objects.filter(provider=request.user, date__gte=today)
         .order_by('-date')
@@ -460,7 +454,6 @@ def auto_extend_schedule(request):
 
         extended = days_created > 0
 
-        # re-query after extension so we return the new furthest date
         last_slot = (
             Timeslot.objects.filter(provider=request.user, date__gte=today)
             .order_by('-date')
