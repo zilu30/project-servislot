@@ -3,10 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
   const navigate = useNavigate();
-
-  // Read role from sessionStorage on first render.
-  // The custom "auth-change" event keeps this in sync when login/logout
-  // happens in another component without a full page reload.
   const [role, setRole] = useState(() => sessionStorage.getItem("role"));
 
   useEffect(() => {
@@ -18,7 +14,7 @@ function Navbar() {
   const handleLogout = () => {
     sessionStorage.clear();
     setRole(null);
-    window.dispatchEvent(new Event("auth-change")); // tell other components (e.g. Navbar in other tabs) to update
+    window.dispatchEvent(new Event("auth-change")); 
     navigate("/");
   };
 
